@@ -1,10 +1,16 @@
 ﻿using AutoMapper;
 using Bussiness.Abstract;
+using Bussiness.Dtos.Models;
+using Bussiness.Dtos.Requests.BrandRequest;
 using Bussiness.Dtos.Requests.CarRequest;
+using Bussiness.Dtos.Requests.OrderRequest;
+using Bussiness.Dtos.Responses.BrandResponses;
 using Bussiness.Dtos.Responses.CarResponses;
+using Core.Utils.Result;
 using DataAccess.Abstract;
 using DataAccess.Concrete.EntityFramework;
 using Entities.Concrete;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,41 +19,88 @@ using System.Threading.Tasks;
 
 namespace Bussiness.Concrete
 {
-    public class CarManager(ICarRepository _carRepository,IMapper _mapper) : ICarService
+    public class CarManager(ICarRepository _carRepository, IMapper _mapper) : ICarService
     {
-        public void Add(CreateCarDto createCarDto)
+        public IResult Add(CreateCarDto createCarDto)
         {
             Car car = _mapper.Map<Car>(createCarDto);
             _carRepository.Add(car);
+            return new SuccessResult("Araba Başarıyla yüklendi");
         }
 
-        public void Delete(int id)
+        public IResult Delete(int id)
         {
             Car car = _carRepository.Get(x => x.Id == id);
             _carRepository.Delete(car);
-        }
-
-        public GetCarDto Get(int id)
-        {
-            Car car = _carRepository.Get(x=>x.Id == id);    
-            GetCarDto carDto = _mapper.Map<GetCarDto>(car);
-            return carDto;
-
+            return new SuccessResult("Araba başarıyla silindi");
 
         }
 
-        public List<GetAllCarDto> GetAll()
+        public IDataResult<GetCarDto> Get(int id)
         {
+            Car car = _carRepository.Get(x => x.Id == id);
+
+            GetCarDto result = _mapper.Map<GetCarDto>(car);
+
+            return new SuccessDataResult<GetCarDto>(result, "Araba Getirildi");
+
+
+        }
+
+        public IDataResult<GetAllCarModel> GetAll()
+        {
+
+
+            GetAllCarModel result = new();
             List<Car> cars = _carRepository.GetAll();
-            List<GetAllCarDto> carsDto = _mapper.Map<List<GetAllCarDto>>(cars);
-            return carsDto;
+            List<GetAllCarDto> temp = _mapper.Map<List<GetAllCarDto>>(cars);
+            result.Items = temp;
+            return new SuccessDataResult<GetAllCarModel>(result, "Arabalar listelendi");
 
         }
 
-        public void Update(UpdateCarDto updateCarDto)
+        public IResult Update(UpdateCarDto updateCarDto)
         {
-            Car car =_mapper.Map<Car>(updateCarDto);
+
+            Car car = _carRepository.Get(x => x.Id == updateCarDto.Id);
+            car.Description = updateCarDto.Description;
+            //  car.DailyPrice = updateCarDto.DailyPrice;
             _carRepository.Update(car);
+            return new SuccessResult("Araba başarıyla güncellendi");
+
         }
-    }
+
+        public IDataResult<GetAllCarModel> GetListByRentalStatus()
+        {
+            GetAllCarModel result = new();
+            List<Car> cars = _carRepository.GetAll().Where(x=>x.RentalStatus==RentalStatus.Vacant).ToList();
+
+            List<GetAllCarDto> temp = _mapper.Map<List<GetAllCarDto>>(cars);
+            result.Items = temp;
+            return new SuccessDataResult<GetAllCarModel>(result, "Arabalar listelendi");
+        }
+
+
+        public IResult UpdateRentalStatus(int carId, RentalStatus newRentalStatus)
+        {
+            Car car = _carRepository.Get(x => x.Id == carId);
+
+            if (car == null)
+            {
+                return new ErrorResult("Araba bulunamadı");
+            }
+            car.RentalStatus = newRentalStatus;
+            _carRepository.Update(car);
+
+            
+
+
+            return new SuccessResult($"Aracın kiralama durumu {newRentalStatus} olarak güncellendii..");
+            
+        }
+
+      
+    } 
+        
+    
 }

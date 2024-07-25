@@ -17,7 +17,7 @@ namespace WebAppCar.Controllers
             return Ok(orderService.GetAll());
         }
 
-        [HttpGet("get/{id}")]
+        [HttpGet("{id}")]
         public ActionResult GetById([FromRoute] int id)
         {
             return Ok(orderService.Get(id));

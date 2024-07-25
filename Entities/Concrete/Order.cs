@@ -4,7 +4,7 @@ namespace Entities.Concrete;
 
 public class Order:Entity
 {
-    public virtual Car Car { get; set; }
+    public virtual IEnumerable<Car> Cars { get; set; }
     public int CarId {  get; set; }
 
     public DateTime DeliveryDate { get; set; }

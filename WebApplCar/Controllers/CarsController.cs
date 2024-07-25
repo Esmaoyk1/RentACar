@@ -1,6 +1,8 @@
 ﻿using Bussiness.Abstract;
 using Bussiness.Dtos.Requests.CarRequest;
 using Bussiness.Dtos.Requests.ModelRequest;
+using Bussiness.Dtos.Responses.CarResponses;
+using Entities.Concrete;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAppCar.Controllers
@@ -15,7 +17,7 @@ namespace WebAppCar.Controllers
             return Ok(carService.GetAll());
         }
 
-        [HttpGet("get/{id}")]
+        [HttpGet("{id}")]
         public ActionResult GetById([FromRoute] int id)
         {
             return Ok(carService.Get(id));  
@@ -47,6 +49,15 @@ namespace WebAppCar.Controllers
 
             return Ok();
         }
+
+        [HttpGet("GetListByRentalStatus")]
+        public ActionResult GetListByRentalStatus()
+        {
+            
+            return Ok(carService.GetListByRentalStatus());
+        }
+
+
 
 
     }

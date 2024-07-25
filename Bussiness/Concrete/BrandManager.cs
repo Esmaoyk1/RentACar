@@ -1,4 +1,5 @@
-﻿using Bussiness.Abstract;
+﻿using AutoMapper;
+using Bussiness.Abstract;
 using Bussiness.Dtos.Models;
 using Bussiness.Dtos.Requests.BrandRequest;
 using Bussiness.Dtos.Responses.BrandResponses;
@@ -6,67 +7,62 @@ using Core.Utils.Result;
 using DataAccess.Abstract;
 using Entities.Concrete;
 
-namespace Bussiness.Concrete
+namespace Bussiness.Concrete;
+
+public class BrandManager(IBrandRepository _brandRepository, IMapper _mapper) : IBrandService
 {
-    public class BrandManager(IBrandRepository _brandRepository) : IBrandService
+    public IResult Add(CreateBrandDto createBrandDto)
     {
-        public IResult Add(CreateBrandDto createBrandDto)
-        {
-            Brand brand = new();
-            brand.Name = createBrandDto.Name;
-            _brandRepository.Add(brand);
-            return new SuccessResult("Marka başarıyla eklendi");
-        }
+        var checkName = IsBrandNameExist(createBrandDto.Name);
+        if (checkName.Success == false) return checkName;
 
-        public IResult Delete(int id)
-        {
-            Brand brand = _brandRepository.Get(x => x.Id == id);
-            _brandRepository.Delete(brand);
-            return new SuccessResult("Marka başarıyla silindi");
-        }
+        Brand brand = _mapper.Map<Brand>(createBrandDto);
+        _brandRepository.Add(brand);
+        return new SuccessResult("Marka başarıyla eklendi");
+    }
 
-        public IDataResult<GetBrandDto> Get(int id)
-        {
-            Brand brand = _brandRepository.Get(x => x.Id == id);
+    public IResult Delete(int id)
+    {
+        Brand brand = _brandRepository.Get(x => x.Id == id);
+        _brandRepository.Delete(brand);
+        return new SuccessResult("Marka başarıyla silindi");
+    }
 
-            GetBrandDto result = new GetBrandDto();
+    public IDataResult<GetBrandDto> Get(int id)
+    {
+        Brand brand = _brandRepository.Get(x => x.Id == id);
 
-            result.Name = brand.Name;
-            result.CreatedTime= DateTime.Now;
-            result.Status = brand.Status;
-          
-            return new SuccessDataResult<GetBrandDto>(result, "Marka getirildi");
-        }
+        GetBrandDto result = _mapper.Map<GetBrandDto>(brand);
+      
+        return new SuccessDataResult<GetBrandDto>(result, "Marka getirildi");
+    }
 
-        public IDataResult<GetAllBrandModel> GetAll()
-        {
-            GetAllBrandModel result = new();
-            List<GetAllBrandDto> temp = new();
-            List<Brand> brands = _brandRepository.GetAll();
-            foreach (var brand in brands)
-            {
-                GetAllBrandDto getAllBrandDto = new();
-                getAllBrandDto.Id = brand.Id;
-                getAllBrandDto.Name = brand.Name;
-                getAllBrandDto.CreatedDate = DateTime.Now;
-                getAllBrandDto.Status = brand.Status;
+    public IDataResult<GetAllBrandModel> GetAll()
+    {
+        GetAllBrandModel result = new();
+        List<Brand> brands = _brandRepository.GetAll();
+        List<GetAllBrandDto> temp = _mapper.Map<List<GetAllBrandDto>>(brands);
+        result.Items = temp;
+        return new SuccessDataResult<GetAllBrandModel>(result, "Markalar listelendi");
+    }
 
-                temp.Add(getAllBrandDto);
+    public IResult Update(UpdateBrandDto updateBrandDto)
+    {
+        var checkName = IsBrandNameExist(updateBrandDto.Name);
+        if (checkName.Success == false) return checkName;
 
-            }
+        Brand brand =_brandRepository.Get(x=>x.Id == updateBrandDto.Id);
+        brand.Name = updateBrandDto.Name;
+        brand.UpdatedDate = DateTime.Now;
+        
+        _brandRepository.Update(brand);
+        return new SuccessResult("Marka başarıyla güncellendi");
+    }
 
-            result.Items = temp;
-            return new SuccessDataResult<GetAllBrandModel>(result, "Markalar listelendi");
-        }
-
-        public IResult Update(UpdateBrandDto updateBrandDto)
-        {
-            Brand brand =_brandRepository.Get(x=>x.Id == updateBrandDto.Id);
-            brand.Name = updateBrandDto.Name;
-            brand.UpdatedDate = DateTime.Now;
-            
-            _brandRepository.Update(brand);
-            return new SuccessResult("Marka başarıyla güncellendi");
-        }
+    private IResult IsBrandNameExist(string name)
+    {
+        Brand brand = _brandRepository.Get(x => x.Name == name);
+        if (brand != null) return new ErrorResult("Marka mevuct..");
+        return new SuccessResult();
     }
 }

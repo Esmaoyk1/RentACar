@@ -5,6 +5,7 @@ namespace Bussiness.Dtos.Responses.CarResponses;
 
 public class GetAllCarDto : IDto
 {
+    public int Id { get; set; }
     public string ModelName {  get; set; }
     public string Title { get; set; }
     public decimal DailyPrice { get; set; }

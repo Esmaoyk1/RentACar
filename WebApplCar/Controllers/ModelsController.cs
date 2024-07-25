@@ -12,13 +12,10 @@ namespace WebAppCar.Controllers
     {
 
         [HttpGet]        //Veri talep etmek için .
-
         public ActionResult GetAll()
         {
             return Ok(modelService.GetAll());
         }
-
-
 
         [HttpGet("{id}")]
         public ActionResult GetById([FromRoute] int id)
@@ -29,15 +26,15 @@ namespace WebAppCar.Controllers
         [HttpPost]
         public ActionResult Add([FromBody] CreateModelDto createModel)
         {
-            modelService.Add(createModel);
-            return Ok();
+            
+            return Ok(modelService.Add(createModel));
         }
 
         [HttpDelete("{id}")]
         public ActionResult Delete([FromRoute] int id)
         {
-            modelService.Delete(id);
-            return Ok();
+           
+            return Ok(modelService.Delete(id));
         }
 
 
@@ -46,10 +43,7 @@ namespace WebAppCar.Controllers
         [HttpPut]
         public ActionResult Update([FromBody] UpdateModelDto updatedModel)
         {
-            modelService.Update(updatedModel);
-
-
-            return Ok();
+            return Ok(modelService.Update(updatedModel));
         }
 
     }

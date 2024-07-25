@@ -18,6 +18,7 @@ public class EfEntityRepositoryBase<TEntity, TContext> : IEntityRepository<TEnti
         }
     }
 
+
     public void Delete(TEntity entity)
     {
 

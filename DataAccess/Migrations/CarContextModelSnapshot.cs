@@ -22,6 +22,21 @@ namespace DataAccess.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("CarOrder", b =>
+                {
+                    b.Property<int>("CarsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OrdersId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CarsId", "OrdersId");
+
+                    b.HasIndex("OrdersId");
+
+                    b.ToTable("CarOrder");
+                });
+
             modelBuilder.Entity("Entities.Concrete.Brand", b =>
                 {
                     b.Property<int>("Id")
@@ -176,10 +191,22 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CarId")
-                        .IsUnique();
-
                     b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("CarOrder", b =>
+                {
+                    b.HasOne("Entities.Concrete.Car", null)
+                        .WithMany()
+                        .HasForeignKey("CarsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Entities.Concrete.Order", null)
+                        .WithMany()
+                        .HasForeignKey("OrdersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Entities.Concrete.Car", b =>
@@ -204,26 +231,9 @@ namespace DataAccess.Migrations
                     b.Navigation("Brand");
                 });
 
-            modelBuilder.Entity("Entities.Concrete.Order", b =>
-                {
-                    b.HasOne("Entities.Concrete.Car", "Car")
-                        .WithOne("Order")
-                        .HasForeignKey("Entities.Concrete.Order", "CarId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Car");
-                });
-
             modelBuilder.Entity("Entities.Concrete.Brand", b =>
                 {
                     b.Navigation("Models");
-                });
-
-            modelBuilder.Entity("Entities.Concrete.Car", b =>
-                {
-                    b.Navigation("Order")
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Entities.Concrete.Model", b =>

@@ -22,7 +22,7 @@ namespace Entities.Concrete
 
         public virtual Model Model { get; set; }
 
-        public virtual Order Order { get; set; }
+        public virtual IEnumerable<Order> Orders { get; set; }
 
 
 

@@ -1,5 +1,8 @@
 ﻿using Bussiness.Abstract;
 using Bussiness.Concrete;
+using Bussiness.Dtos.Responses.CarResponses;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
@@ -17,6 +20,13 @@ public static class BussinessServiceExtension
         services.AddTransient<IOrderService, OrderManager>();
 
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
+
+
+
+        services.AddFluentValidationAutoValidation(config => 
+            config.DisableDataAnnotationsValidation = true)
+            .AddFluentValidationClientsideAdapters()
+            .AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
        
 
         return services;

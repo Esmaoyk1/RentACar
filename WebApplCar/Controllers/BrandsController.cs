@@ -9,13 +9,13 @@ namespace WebAppCar.Controllers;
 [ApiController]
 public class BrandsController(IBrandService brandService) : ControllerBase
 {
-    [HttpGet("Herşeyi getir")]        //Veri talep etmek için .
+    [HttpGet]        //Veri talep etmek için .
     public ActionResult GetAll()
     {
         return Ok(brandService.GetAll());
     }
 
-    [HttpGet("get/{id}")]
+    [HttpGet("{id}")]
     public ActionResult GetById([FromRoute] int id)
     {
         return Ok(brandService.Get(id));  // 200 kodu gonderiyor

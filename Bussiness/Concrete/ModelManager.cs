@@ -1,82 +1,69 @@
 ﻿using AutoMapper;
 using Bussiness.Abstract;
+using Bussiness.Dtos.Models;
+using Bussiness.Dtos.Requests.BrandRequest;
 using Bussiness.Dtos.Requests.ModelRequest;
+using Bussiness.Dtos.Responses.BrandResponses;
 using Bussiness.Dtos.Responses.ModelResponses;
+using Core.Utils.Result;
 using DataAccess.Abstract;
+using DataAccess.Concrete.EntityFramework;
 using Entities.Concrete;
 
 namespace Bussiness.Concrete
 {
     public class ModelManager(IModelRepository _modelRepository ,IBrandService _brandService, IMapper _mapper) : IModelService
     {
-        public void Add(CreateModelDto createModelDto)
+        public IResult Add(CreateModelDto createModelDto)
         {
+
+          
+
+
             Model model = _mapper.Map<Model>(createModelDto);
             _modelRepository.Add(model);
+            return new SuccessResult("Model başarıyla eklendi");
         }
 
-        public void Delete(int id)
+        public IResult Delete(int id)
         {
             Model model = _modelRepository.Get(x => x.Id == id);
             _modelRepository.Delete(model);
+            return new SuccessResult("Model başarıyla silindi");
         }
 
 
-        public GetModelDto Get(int id)
+        public IDataResult<GetModelDto> Get(int id)
         {
             Model model = _modelRepository.Get(x => x.Id == id);
 
-            GetModelDto result = new GetModelDto();
-            result.Name = model.Name;
-            result.BrandId = model.BrandId;
-            result.CreatedDate = model.CreatedDate;
-            result.Status = model.Status;
+            GetModelDto result = _mapper.Map<GetModelDto>(model);
 
-
-            return result;
-
-
-
-            //public GetModelDto Get(int id)
-            //{
-            //    Model model = _modelRepository.Get(x => x.Id == id);
-
-            //    if (model == null)
-            //    {
-            //        throw new Exception($"Model with ID {id} not found.");
-            //    }
-
-            //    return _mapper.Map<GetModelDto>(model);
-            //}
+            return new SuccessDataResult<GetModelDto>(result, "Marka getirildi");
 
 
         }
 
-        public List<GetAllModelDto> GetAll()
+        public IDataResult<GetAllModelModel> GetAll()
         {
-            List<GetAllModelDto> result = new();
+            GetAllModelModel result = new();
             List<Model> models = _modelRepository.GetAll();
-            foreach (var model in models)
-            {
-                GetAllModelDto getAllModelDto = new();
-                getAllModelDto.Id = model.Id;
-                getAllModelDto.Name = model.Name;
-                getAllModelDto.CreatedDate = DateTime.Now;
-                getAllModelDto.Status = model.Status;
-                getAllModelDto.BrandName = _brandService.Get(model.BrandId).Data.Name;
-
-                result.Add(getAllModelDto);
-            }
-            return result;
+            List<GetAllModelDto> temp = _mapper.Map<List<GetAllModelDto>>(models);
+            result.Items = temp;
+            return new SuccessDataResult<GetAllModelModel>(result, "Modeller listelendi");
         }
 
-        public void Update(UpdateModelDto updateModelDto)
+        public IResult Update(UpdateModelDto updateModelDto)
         {
             Model model = _modelRepository.Get(x => x.Id == updateModelDto.Id);
             model.Name = updateModelDto.Name;
             model.UpdatedDate = DateTime.Now;
 
             _modelRepository.Update(model);
+            return new SuccessResult("Model başarıyla güncellendi");
         }
+
+
+        
     }
 }

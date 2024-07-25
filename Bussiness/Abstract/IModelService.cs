@@ -1,7 +1,9 @@
-﻿using Bussiness.Dtos.Requests.BrandRequest;
+﻿using Bussiness.Dtos.Models;
+using Bussiness.Dtos.Requests.BrandRequest;
 using Bussiness.Dtos.Requests.ModelRequest;
 using Bussiness.Dtos.Responses.BrandResponses;
 using Bussiness.Dtos.Responses.ModelResponses;
+using Core.Utils.Result;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,10 +14,11 @@ namespace Bussiness.Abstract
 {
     public interface IModelService
     {
-        List<GetAllModelDto> GetAll();
-        GetModelDto Get(int id);
-        void Add(CreateModelDto createModelDto);
-        void Delete(int id);
-        void Update(UpdateModelDto updateModelDto);
+        IDataResult<GetAllModelModel> GetAll();
+        IDataResult<GetModelDto> Get(int id);
+        
+        IResult Add(CreateModelDto createModelDto);
+        IResult Delete(int id);
+        IResult Update(UpdateModelDto updateModelDto);
     }
 }
