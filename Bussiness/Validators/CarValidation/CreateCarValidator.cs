@@ -28,18 +28,7 @@ public class CreateCarValidator : AbstractValidator<CreateCarDto>
         //    .Must(y => int.TryParse(y.ToString(), out _))
         //        .WithMessage("Yıl alanına sayısal bir değer giriniz.");
 
-
-
-
-
-
-
     }
-
-
-
-
-
 }
 
 

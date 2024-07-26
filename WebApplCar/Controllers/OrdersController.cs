@@ -14,13 +14,19 @@ namespace WebAppCar.Controllers
         [HttpGet]
         public ActionResult GetAll()
         {
-            return Ok(orderService.GetAll());
+           // return Ok(orderService.GetAll());
+           var result = orderService.GetAll();
+            if (!result.Success) return BadRequest(result);
+            return Ok(result);
         }
 
         [HttpGet("{id}")]
         public ActionResult GetById([FromRoute] int id)
         {
-            return Ok(orderService.Get(id));
+            //  return Ok(orderService.Get(id));
+            var result = orderService.Get(id);
+            if (!result.Success) return BadRequest(result);
+            return Ok(result);
         }
 
 
@@ -29,15 +35,19 @@ namespace WebAppCar.Controllers
         [HttpPost]
         public ActionResult Add([FromBody] CreateOrderDto createModel)
         {
-            orderService.Add(createModel);
-            return Ok();
+            //return Ok(orderService.Add(createModel));
+            var result = orderService.Add(createModel);
+            if (!result.Success) return BadRequest(result);
+            return Ok(result);
         }
 
         [HttpDelete("{id}")]
         public ActionResult Delete([FromRoute] int id)
         {
-            orderService.Delete(id);
-            return Ok();
+            //return Ok(orderService.Delete(id));
+            var result = orderService.Delete(id);
+            if (!result.Success) return BadRequest(result);
+            return Ok(result);
         }
 
 
@@ -46,8 +56,10 @@ namespace WebAppCar.Controllers
 
         public ActionResult Update([FromBody] UpdateOrderDto updateOrder)
         {
-            orderService.Update(updateOrder);
-            return Ok();
+            //return Ok(orderService.Update(updateOrder));
+            var result = orderService.Update(updateOrder);
+            if (!result.Success) return BadRequest(result);
+            return Ok(result);
         }
         
 

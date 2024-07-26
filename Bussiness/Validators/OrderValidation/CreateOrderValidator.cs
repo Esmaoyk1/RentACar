@@ -12,20 +12,19 @@ namespace Bussiness.Validators.OrderValidation
     {
         public CreateOrderValidator()
         {
-            //RuleFor(x => new { x.TerceDate, x.DeliveryDate })
-            //    .NotEmpty()
-            //        .WithMessage("Tarihler boş geçilmemeli");
-
-
             RuleFor(x => x.TerceDate)
                 .NotEmpty()
                     .WithMessage("Tarih bos geçilmesin");
 
 
-
             RuleFor(x => x.DeliveryDate)
                 .NotEmpty()
                     .WithMessage("Tarih bos geçilmesin");
+
+
+            //RuleFor(x => new { x.TerceDate, x.DeliveryDate })
+            //    .NotEmpty()
+            //        .WithMessage("Tarihler boş geçilmemeli");
 
         }
     }

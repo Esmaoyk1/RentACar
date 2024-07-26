@@ -19,6 +19,7 @@ public interface ICarService
     IDataResult<GetAllCarModel> GetListByRentalStatus();
     IResult UpdateRentalStatus(int carId, RentalStatus newRentalStatus);
 
+
     
 
 

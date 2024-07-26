@@ -5,6 +5,6 @@ namespace Bussiness.Dtos.Models;
 
 public class GetAllModelModel : IDto
 {
-    public List<GetAllModelDto> Items { get; set; }
+   public List<GetAllModelDto> Items { get; set; }
 }
 

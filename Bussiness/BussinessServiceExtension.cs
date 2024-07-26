@@ -14,21 +14,16 @@ public static class BussinessServiceExtension
     {
         services.AddTransient<IBrandService, BrandManager>();
         services.AddTransient<IModelService, ModelManager>();
-
         services.AddTransient<ICarService, CarManager>();
-     
         services.AddTransient<IOrderService, OrderManager>();
-
+       
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
-
-
 
         services.AddFluentValidationAutoValidation(config => 
             config.DisableDataAnnotationsValidation = true)
             .AddFluentValidationClientsideAdapters()
             .AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
        
-
         return services;
     }
 }

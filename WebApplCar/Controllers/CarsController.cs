@@ -14,51 +14,65 @@ namespace WebAppCar.Controllers
         [HttpGet]
         public ActionResult GetAll()
         {
-            return Ok(carService.GetAll());
+            var result = carService.GetAll();
+            if(!result.Success) return BadRequest(result);  //Yanlış bir giriş olduğu durumda  400                                                                  Hata Kodu gonder.
+            return Ok(result);
         }
 
         [HttpGet("{id}")]
         public ActionResult GetById([FromRoute] int id)
         {
-            return Ok(carService.Get(id));  
+            //  return Ok(carService.Get(id));  
+            var result = carService.Get(id);
+            if (!result.Success) return BadRequest(result);
+            return Ok(result);
+
         }
 
 
         [HttpPost]
-        public ActionResult Add([FromBody] CreateCarDto createModel)
+        public ActionResult Add([FromBody] CreateCarDto createCarDto)
         {
-            carService.Add(createModel);
-            return Ok();
+
+            //  return Ok(carService.Add(createCarDto));
+
+            var result = carService.Add(createCarDto);
+            if (!result.Success) return BadRequest(result);
+            return Ok(result);
+
         }
 
         [HttpDelete("{id}")]
         public ActionResult Delete([FromRoute] int id)
         {
-            carService.Delete(id);
-            return Ok();
+            //carService.Delete(id);
+            //return Ok();
+
+            var result = carService.Delete(id);
+            if (!result.Success) return BadRequest(result);
+            return Ok(result);
         }
-
-
-
 
         [HttpPut]
         public ActionResult Update([FromBody] UpdateCarDto updatedModel)
         {
-            carService.Update(updatedModel);
+            //carService.Update(updatedModel);
+            //return Ok();
 
-
-            return Ok();
+            var result = carService.Update(updatedModel);
+            if (!result.Success) return BadRequest(result);
+            return Ok(result);
         }
 
         [HttpGet("GetListByRentalStatus")]
         public ActionResult GetListByRentalStatus()
         {
             
-            return Ok(carService.GetListByRentalStatus());
+          //  return Ok(carService.GetListByRentalStatus());
+
+            var result = carService.GetListByRentalStatus();
+            if (!result.Success) return BadRequest(result);
+            return Ok(result);
         }
-
-
-
-
     }
 }

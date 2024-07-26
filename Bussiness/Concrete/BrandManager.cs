@@ -17,6 +17,7 @@ public class BrandManager(IBrandRepository _brandRepository, IMapper _mapper) : 
         if (checkName.Success == false) return checkName;
 
         Brand brand = _mapper.Map<Brand>(createBrandDto);
+        brand.CreatedDate = DateTime.Now;
         _brandRepository.Add(brand);
         return new SuccessResult("Marka başarıyla eklendi");
     }
@@ -31,9 +32,7 @@ public class BrandManager(IBrandRepository _brandRepository, IMapper _mapper) : 
     public IDataResult<GetBrandDto> Get(int id)
     {
         Brand brand = _brandRepository.Get(x => x.Id == id);
-
         GetBrandDto result = _mapper.Map<GetBrandDto>(brand);
-      
         return new SuccessDataResult<GetBrandDto>(result, "Marka getirildi");
     }
 
@@ -54,7 +53,6 @@ public class BrandManager(IBrandRepository _brandRepository, IMapper _mapper) : 
         Brand brand =_brandRepository.Get(x=>x.Id == updateBrandDto.Id);
         brand.Name = updateBrandDto.Name;
         brand.UpdatedDate = DateTime.Now;
-        
         _brandRepository.Update(brand);
         return new SuccessResult("Marka başarıyla güncellendi");
     }
@@ -65,4 +63,6 @@ public class BrandManager(IBrandRepository _brandRepository, IMapper _mapper) : 
         if (brand != null) return new ErrorResult("Marka mevuct..");
         return new SuccessResult();
     }
+
+
 }

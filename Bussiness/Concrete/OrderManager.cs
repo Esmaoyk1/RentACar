@@ -15,11 +15,9 @@ public class OrderManager(IOrderRepository _orderRepository, IMapper _mapper, IC
     public IResult Add(CreateOrderDto createOrderDto)
     {
         Order order = _mapper.Map<Order>(createOrderDto);
-
         order.TotalPrice = carService.Get(createOrderDto.CarId).Data.DailyPrice * (createOrderDto.DeliveryDate - createOrderDto.TerceDate).Days;
         order.CreatedDate = DateTime.Now;
         _orderRepository.Add(order);
-
         carService.UpdateRentalStatus(createOrderDto.CarId, RentalStatus.Leased);
         return new SuccessResult("İşlem Başarıyla Gerçekleşti");
     }
@@ -35,14 +33,11 @@ public class OrderManager(IOrderRepository _orderRepository, IMapper _mapper, IC
     {
         Order order = _orderRepository.Get(x => x.Id == id);
         GetOrderDto result = _mapper.Map<GetOrderDto>(order);
-
         return new SuccessDataResult<GetOrderDto>(result, "İşem getirildi");
-
     }
 
     public IDataResult<GetAllOrderModel> GetAll()
     {
-
         GetAllOrderModel result = new();
         List<Order> orders = _orderRepository.GetAll();
         List<GetAllOrderDto> temp = _mapper.Map<List<GetAllOrderDto>>(orders);
@@ -56,7 +51,6 @@ public class OrderManager(IOrderRepository _orderRepository, IMapper _mapper, IC
         int oldCarId = order.CarId;
         int newCarId = updateOrderDto.CarId;
 
-
         var date = order.CreatedDate;
         order = _mapper.Map<Order>(updateOrderDto);
         order.UpdatedDate = DateTime.Now;
@@ -68,9 +62,7 @@ public class OrderManager(IOrderRepository _orderRepository, IMapper _mapper, IC
         carService.UpdateRentalStatus(oldCarId, RentalStatus.Vacant);
         carService.UpdateRentalStatus(newCarId, RentalStatus.Leased);
 
-        
         return new SuccessResult("Başarıyla güncellendi");
     }
 
 }
-   

@@ -43,10 +43,7 @@ public class MappingProfiles : Profile
         CreateMap<Brand, GetAllBrandDto>().ReverseMap();
 
 
-
         AllowNullCollections = true;
         AddGlobalIgnore("Item");
-
-
     }
 }

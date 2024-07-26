@@ -17,5 +17,4 @@ public static class DataAccessServiceExtension
         return services;
     }
 
-    //Bu kod parçası, Entity Framework Core ile SQL Server veritabanı bağlantısını ve DbContext sınıfını yapılandırarak, ASP.NET Core uygulamasına veri erişim hizmetlerinin eklenmesini sağlar.
 }
