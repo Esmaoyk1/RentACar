@@ -18,6 +18,8 @@ namespace Bussiness.DependencyResolvers.Autofac;
 
 public class MappingProfiles : Profile
 {
+    //Profile sınıfı, eşleme yapılandırmalarını içeren bir sınıftır.
+
     public MappingProfiles()
     {
         CreateMap<Car, CreateCarDto>().ReverseMap();
@@ -43,7 +45,10 @@ public class MappingProfiles : Profile
         CreateMap<Brand, GetAllBrandDto>().ReverseMap();
 
 
-        AllowNullCollections = true;
-        AddGlobalIgnore("Item");
+        AllowNullCollections = true;  //bir koleksiyonun null olmasına izin verir 
+        AddGlobalIgnore("Item");    //Item" adında bir özellik varsa, AutoMapper bu özelliği eşleme işlemi sırasında dikkate almaz.
+
+
+        //Car, Brand, Order, Model gibi entity'lerle ilgili DTO'lar arasında otomatik dönüşümleri tanımlar. Bu dönüşümler, uygulamanın veri ile çalışırken veri formatlarının birbirine dönüştürülmesi işlemini otomatikleştirir, böylece manuel eşlemeyi ortadan kaldırır 
     }
 }

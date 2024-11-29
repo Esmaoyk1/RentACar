@@ -9,3 +9,4 @@ namespace Core.Entities;
 public interface IEntity
 {
 }
+//projedeki tür güvenliği sağlamak ve işaretleme amacıyla kullanılır.

@@ -1,4 +1,6 @@
-﻿namespace Core.Entities;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+
+namespace Core.Entities;
 
 public class Entity : IEntity
 {
@@ -8,3 +10,5 @@ public class Entity : IEntity
     public DateTime? UpdatedDate { get; set; }
     public bool Status { get; set; } = true;
 }
+
+//Bu Entity sınıfı, temel özellikleri içeren bir taban sınıf olarak tasarlanmıştır. 

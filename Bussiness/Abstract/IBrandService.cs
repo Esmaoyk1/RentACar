@@ -5,6 +5,8 @@ using Core.Utils.Result;
 
 namespace Bussiness.Abstract
 {
+
+    // temel servis işlemlerini tanımlar. 
     public interface IBrandService
     {
         IDataResult<GetAllBrandModel> GetAll();

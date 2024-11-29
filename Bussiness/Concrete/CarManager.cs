@@ -40,13 +40,27 @@ namespace Bussiness.Concrete
 
         }
 
+        //public IDataResult<GetCarDto> Get(int id)
+        //{
+        //    Car car = _carRepository.Get(x => x.Id == id);
+        //    GetCarDto result = _mapper.Map<GetCarDto>(car);
+        //    return new SuccessDataResult<GetCarDto>(result, "Araba Getirildi");
+
+        //}
+
         public IDataResult<GetCarDto> Get(int id)
         {
             Car car = _carRepository.Get(x => x.Id == id);
-            GetCarDto result = _mapper.Map<GetCarDto>(car);
-            return new SuccessDataResult<GetCarDto>(result, "Araba Getirildi");
 
+            if (car == null) // Eğer araba bulunamazsa
+            {
+                return new ErrorDataResult<GetCarDto>(null, "ID değeri bulunamadı.");
+            }
+
+            GetCarDto result = _mapper.Map<GetCarDto>(car);
+            return new SuccessDataResult<GetCarDto>(result, "Araba getirildi.");
         }
+
 
         public IDataResult<GetAllCarModel> GetAll()
         {

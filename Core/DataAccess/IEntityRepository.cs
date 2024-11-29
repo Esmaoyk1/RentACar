@@ -20,3 +20,11 @@ namespace Core.DataAccess
     }
 
 }
+
+
+//Bu yapı, aynı CRUD işlemlerini farklı türler için tekrar etmeden kullanmayı sağlar, böylece kod tekrarı azalır ve daha esnek bir veri erişim katmanı oluşur.
+
+
+
+
+

@@ -35,12 +35,27 @@ namespace Bussiness.Concrete
         }
 
 
+        //public IDataResult<GetModelDto> Get(int id)
+        //{
+        //    Model model = _modelRepository.Get(x => x.Id == id);
+        //    GetModelDto result = _mapper.Map<GetModelDto>(model);
+        //    return new SuccessDataResult<GetModelDto>(result, "Marka getirildi");
+        //}
+
+
         public IDataResult<GetModelDto> Get(int id)
         {
             Model model = _modelRepository.Get(x => x.Id == id);
+
+            if (model == null) // Eğer model bulunamazsa
+            {
+                return new ErrorDataResult<GetModelDto>(null, "ID değeri bulunamadı.");
+            }
+
             GetModelDto result = _mapper.Map<GetModelDto>(model);
-            return new SuccessDataResult<GetModelDto>(result, "Marka getirildi");
+            return new SuccessDataResult<GetModelDto>(result, "Model getirildi.");
         }
+
 
         public IDataResult<GetAllModelModel> GetAll()
         {

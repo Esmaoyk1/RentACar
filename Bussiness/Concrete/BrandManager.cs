@@ -29,12 +29,25 @@ public class BrandManager(IBrandRepository _brandRepository, IMapper _mapper) : 
         return new SuccessResult("Marka başarıyla silindi");
     }
 
+    //public IDataResult<GetBrandDto> Get(int id)
+    //{
+    //    Brand brand = _brandRepository.Get(x => x.Id == id);
+    //    GetBrandDto result = _mapper.Map<GetBrandDto>(brand);
+    //    return new SuccessDataResult<GetBrandDto>(result, "Marka getirildi");
+    //}
     public IDataResult<GetBrandDto> Get(int id)
     {
         Brand brand = _brandRepository.Get(x => x.Id == id);
+
+        if (brand == null) // Eğer marka bulunamazsa
+        {
+            return new ErrorDataResult<GetBrandDto>(null, "ID değeri bulunamadı.");
+        }
+
         GetBrandDto result = _mapper.Map<GetBrandDto>(brand);
-        return new SuccessDataResult<GetBrandDto>(result, "Marka getirildi");
+        return new SuccessDataResult<GetBrandDto>(result, "Marka getirildi.");
     }
+
 
     public IDataResult<GetAllBrandModel> GetAll()
     {
@@ -60,7 +73,7 @@ public class BrandManager(IBrandRepository _brandRepository, IMapper _mapper) : 
     private IResult IsBrandNameExist(string name)
     {
         Brand brand = _brandRepository.Get(x => x.Name == name);
-        if (brand != null) return new ErrorResult("Marka mevuct..");
+        if (brand != null) return new ErrorResult("Marka mevcutt..");
         return new SuccessResult();
     }
 

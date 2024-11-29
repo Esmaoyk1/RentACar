@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 namespace DataAccess.Concrete.EntityFramework
 {
     public class EfCarRepository : EfEntityRepositoryBase<Car, CarContext>, ICarRepository
-
     {
 
     }

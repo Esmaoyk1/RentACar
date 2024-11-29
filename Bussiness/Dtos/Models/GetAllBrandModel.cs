@@ -7,3 +7,4 @@ public class GetAllBrandModel: IDto
 {
     public List<GetAllBrandDto> Items { get; set; }
 }
+//Bu sınıfın amacı, birden fazla markayı taşıyan bir veri yapısı sağlamaktır.

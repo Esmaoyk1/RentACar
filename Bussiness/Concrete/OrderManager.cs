@@ -29,11 +29,25 @@ public class OrderManager(IOrderRepository _orderRepository, IMapper _mapper, IC
         return new SuccessResult("İşlem  başarıyla silindi");
     }
 
+    //public IDataResult<GetOrderDto> Get(int id)
+    //{
+    //    Order order = _orderRepository.Get(x => x.Id == id);
+    //    GetOrderDto result = _mapper.Map<GetOrderDto>(order);
+    //    return new SuccessDataResult<GetOrderDto>(result, "İşem getirildi");
+    //}
+
+
     public IDataResult<GetOrderDto> Get(int id)
     {
         Order order = _orderRepository.Get(x => x.Id == id);
+
+        if (order == null) // Eğer sipariş bulunamazsa
+        {
+            return new ErrorDataResult<GetOrderDto>(null, "ID değeri bulunamadı.");
+        }
+
         GetOrderDto result = _mapper.Map<GetOrderDto>(order);
-        return new SuccessDataResult<GetOrderDto>(result, "İşem getirildi");
+        return new SuccessDataResult<GetOrderDto>(result, "Sipariş getirildi.");
     }
 
     public IDataResult<GetAllOrderModel> GetAll()

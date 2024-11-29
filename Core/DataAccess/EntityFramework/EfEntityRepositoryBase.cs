@@ -20,7 +20,6 @@ public class EfEntityRepositoryBase<TEntity, TContext> : IEntityRepository<TEnti
 
     public void Delete(TEntity entity)
     {
-
         //using anahtar kelimesi, DbContext nesnesinin doğru ve güvenli bir şekilde yönetilmesini sağlamak için kullanılmıştır.,
         //EntityEntry nesnesini kullanarak varlığın durumunu "Deleted" olarak işaretler ve ardından değişiklikleri veri tabanına kaydeder.
         using (TContext context = new TContext())
@@ -57,3 +56,5 @@ public class EfEntityRepositoryBase<TEntity, TContext> : IEntityRepository<TEnti
         }
     }
 }
+
+//Bu sınıfın amacı, her varlık sınıfı için CRUD işlemlerini ayrı ayrı yazmak yerine tek bir yerde toplamak ve kod tekrarını azaltmaktır. Örneğin, Brand, Car, Model gibi sınıflar için ayrı ayrı CRUD işlemleri yazmak yerine, bu sınıfı kullanarak tüm varlıklar için temel veri erişim işlemleri tek bir yapı ile yapılabilir.
